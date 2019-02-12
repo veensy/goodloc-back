@@ -15,24 +15,36 @@ exports.signup = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   const confirm_password = req.body.confirm_password;
-  if (!email || !password || password !== confirm_password) {
-    console.log(req.body);
-    return res
-      .status(422)
-      .send({
-        error: "You must provide email and same password"
-      });
+
+  const mailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (
+    !email ||
+    !password ||
+    password !== confirm_password ||
+    !email.match(mailFormat)
+  ) {
+    return res.status(422).send({
+      error: "You must provide a valid email and same password"
+    });
   } else {
     User.findOne({ email: email }, (err, existingUser) => {
       if (err) {
         return next(err);
       }
       if (existingUser) {
-        return res.status(422).send({ error: "Email is in use" });
+        return res.json({ error: "Email is in use" });
       }
 
       if (!existingUser) {
-        const user = new User({ email: email, password: password });
+        const user = new User({
+          lastname: lastname,
+          firstname: firstname,
+          status: status,
+          username: username,
+          email: email,
+          password: password
+        });
         user.save(err => {
           if (err) {
             return next(err);
