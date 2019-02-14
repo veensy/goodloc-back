@@ -11,10 +11,15 @@ exports.signin = (req, res, next) => {
   res.send({ token: tokenForUser(req.user) });
 };
 
+
 exports.signup = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   const confirm_password = req.body.confirm_password;
+  const lastName = req.body.lastName;
+  const firstName = req.body.firstName;
+  const status = req.body.status;
+  const username = req.body.username;
 
   const mailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -38,8 +43,8 @@ exports.signup = (req, res, next) => {
 
       if (!existingUser) {
         const user = new User({
-          lastname: lastname,
-          firstname: firstname,
+          lastName: lastName,
+          firstName: firstName,
           status: status,
           username: username,
           email: email,

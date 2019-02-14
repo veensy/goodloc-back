@@ -17,6 +17,8 @@
     "jwt-simple": "^0.5.5",
     "mongoose": "^5.4.10",
     "morgan": "^1.9.1",
+    "nodemailer": "^5.1.1",
+    "nodemailer-express-handlebars": "^3.0.0",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0"
