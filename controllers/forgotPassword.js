@@ -21,7 +21,6 @@ exports.forgotPassword = (req, res, next) => {
   User.findOne({
     email: email
   }).then(user => {
-
     if (user === null) {
       console.log("Email not in database", user);
       res.json("Email not in db");
@@ -50,7 +49,7 @@ exports.forgotPassword = (req, res, next) => {
         text:
           `You received this email because you (or someone else ) have requested the reset of the password for your account.${" "}` +
           `Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:${" "}` +
-          `http://localhost/3090/reset/${newToken} ${" "}` +
+          `http://localhost:3000/resetpassword/${newToken} ${" "}` +
           `Ìf you did not request this, please ignore this email and your password will remain unchanged.`
       };
       console.log("sending email");

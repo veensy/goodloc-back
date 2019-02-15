@@ -4,7 +4,9 @@ const passport = require("passport");
 
 const requireAuth = passport.authenticate("jwt", { session: false });
 const requireSignin = passport.authenticate("local", { session: false });
-const pass = require("./controllers/forgotPassword")
+const pass = require("./controllers/forgotPassword");
+const reset = require("./controllers/resetPassword");
+const update = require("./controllers/updatePassword");
 
 module.exports = app => {
   app.get("/", requireAuth, (req, res) => {
@@ -15,7 +17,9 @@ module.exports = app => {
 
   app.post("/signup", Authentification.signup);
 
-  app.post("/forgotpassword",pass.forgotPassword)
-    
- 
+  app.post("/forgotpassword", pass.forgotPassword);
+
+  app.get("/resetpassword", reset.resetPassword);
+
+  app.put("/updatepassword", update.updatepassword);
 };
