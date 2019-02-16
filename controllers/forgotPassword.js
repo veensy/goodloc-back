@@ -27,20 +27,29 @@ exports.forgotPassword = (req, res, next) => {
     } else if (user) {
       const newToken = tokenForUser(user);
       console.log(newToken);
+      console.log("-----------------------------------");
 
       user.update({
         resetPasswordToken: newToken,
         resetPasswordExpires: Date.now() + 360000
       });
+
+      user.resetPasswordToken = newToken;
+      user.resetPasswordExpires = Date.now() + 360000;
+      user.save();
+
       const transporter = nodemailer.createTransport({
         service: "gmail",
         host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
         auth: {
           user: `${process.env.EMAIL_ADDRESS}`,
           pass: `${process.env.EMAIL_PASSWORD}`
         }
       });
       console.log(transporter);
+      console.log("-----------------------------------");
 
       const mailOption = {
         from: "demo@gmail.com",
@@ -53,14 +62,18 @@ exports.forgotPassword = (req, res, next) => {
           `Ìf you did not request this, please ignore this email and your password will remain unchanged.`
       };
       console.log("sending email");
+      console.log("-----------------------------------");
       transporter.sendMail(mailOption, (err, response) => {
         console.log(mailOption);
+        console.log("-----------------------------------");
 
         if (err) {
           console.error("there was an error", err);
+          console.log("-----------------------------------");
           return next(err);
         } else {
           console.log("here is the res: ", response);
+          console.log("-----------------------------------");
           res.status(200).json("Recovery email sent");
         }
       });

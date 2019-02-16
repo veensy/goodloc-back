@@ -9,7 +9,9 @@ const userSchema = new Schema({
   lastName: String,
   firstName: String,
   status: String,
-  note: [Number]
+  note: [Number],
+  resetPasswordToken: String,
+  resetPasswordExpires: Date
 });
 
 userSchema.pre("save", function(next) {
