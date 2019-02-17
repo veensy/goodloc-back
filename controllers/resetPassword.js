@@ -1,7 +1,6 @@
 const User = require("../models/user");
 
 exports.resetPassword = (req, res, next) => {
-  console.log(req.query.newToken);
 
   User.findOne({
     resetPasswordToken: req.query.newToken,

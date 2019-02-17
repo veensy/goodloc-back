@@ -26,9 +26,7 @@ exports.forgotPassword = (req, res, next) => {
       res.json("Email not in db");
     } else if (user) {
       const newToken = tokenForUser(user);
-      console.log(newToken);
-      console.log("-----------------------------------");
-
+    
       user.update({
         resetPasswordToken: newToken,
         resetPasswordExpires: Date.now() + 360000
@@ -48,9 +46,7 @@ exports.forgotPassword = (req, res, next) => {
           pass: `${process.env.EMAIL_PASSWORD}`
         }
       });
-      console.log(transporter);
-      console.log("-----------------------------------");
-
+      
       const mailOption = {
         from: "demo@gmail.com",
         to: `${user.email}`,
@@ -65,15 +61,12 @@ exports.forgotPassword = (req, res, next) => {
       console.log("-----------------------------------");
       transporter.sendMail(mailOption, (err, response) => {
         console.log(mailOption);
-        console.log("-----------------------------------");
 
         if (err) {
           console.error("there was an error", err);
-          console.log("-----------------------------------");
           return next(err);
         } else {
           console.log("here is the res: ", response);
-          console.log("-----------------------------------");
           res.status(200).json("Recovery email sent");
         }
       });

@@ -8,7 +8,7 @@ const tokenForUser = user => {
 };
 
 exports.signin = (req, res, next) => {
-  res.send({ token: tokenForUser(req.user) });
+  res.json({ token: tokenForUser(req.user) });
 };
 
 
