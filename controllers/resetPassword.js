@@ -4,7 +4,7 @@ exports.resetPassword = (req, res, next) => {
 
   User.findOne({
     resetPasswordToken: req.query.newToken,
-    resetPasswordExpires: { $gt: Date.now() }
+    resetPasswordExpires: { $gte: Date.now() }
   }).then(user => {
     console.log(user);
     if (user == null) {

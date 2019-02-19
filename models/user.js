@@ -5,13 +5,16 @@ const bcrypt = require("bcrypt-nodejs");
 const userSchema = new Schema({
   username: String,
   email: { type: String, unique: true, lowercase: true },
+  isVerified: { type: Boolean, default: false },
   password: String,
   lastName: String,
   firstName: String,
   status: String,
   note: [Number],
   resetPasswordToken: String,
-  resetPasswordExpires: Date
+  resetPasswordExpires: Date,
+  TokenForConfirmEmail: { type: String, required: true },
+  TokenExpirationDate: Date
 });
 
 userSchema.pre("save", function(next) {
@@ -34,12 +37,6 @@ userSchema.pre("save", function(next) {
 });
 
 userSchema.methods.comparePassword = function(candidatePassword, callback) {
-  console.log("---------------------");
-
-  console.log(candidatePassword,this.password);
-  console.log("---------------------");
-
-  
   bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
     if (err) {
       return callback(err);

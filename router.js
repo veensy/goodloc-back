@@ -7,11 +7,11 @@ const requireSignin = passport.authenticate("local", { session: false });
 const pass = require("./controllers/forgotPassword");
 const reset = require("./controllers/resetPassword");
 const update = require("./controllers/updatePassword");
+const confirm = require('./controllers/authentification')
+const resend =  require('./controllers/authentification')
 
 module.exports = app => {
-  app.get("/", requireAuth, (req, res) => {
-    res.send({ hi: "there" });
-  });
+  app.get("/", requireAuth);
 
   app.post("/signin", requireSignin, Authentification.signin);
 
@@ -22,4 +22,8 @@ module.exports = app => {
   app.get("/resetpassword", reset.resetPassword);
 
   app.put("/updatepassword", update.updatepassword);
+
+  app.post("/confirmation", confirm.confirmationPost);
+
+  app.post("/resend", resend.resendTokenPost);
 };
