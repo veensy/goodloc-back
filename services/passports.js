@@ -15,21 +15,17 @@ const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
     if (!user) {
       return done(null, false);
     }
+    
     user.comparePassword(password, (err, isMatch) => {
-      if (!user.isVerified) {
-        return res
-          .status(401)
-          .send({
-            type: "Not verified",
-            errorMessage: "Your account has not been verified."
-          });
-      }
       if (err) {
         return done(err);
+ 
       }
       if (!isMatch) {
-        return done(null, false);
+        let isPass={pass:false}
+        return done(null, isPass);
       }
+
       return done(null, user);
     });
   });

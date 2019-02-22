@@ -10,11 +10,31 @@ const tokenForUser = user => {
 };
 // SIGN IN
 exports.signin = (req, res, next) => {
-  console.log("----------------------");
-  console.log("verify ?", user.isVerified);
-  console.log("----------------------");
-  res.json({ token: tokenForUser(req.user) });
+ const isMatch = req.user.pass
+  const email =req.body.email;
+
+  if(!isMatch){
+    return res.send({ errorMessage:"Wrong password"})
+  }
+  User.findOne({ email: email }, (err, user) => { 
+ 
+  if (!user.isVerified) {
+    return res.send({
+        type: "Not verified",
+        errorMessage: "Your account has not been verified."
+      })
+  }
+   if(!user.email){
+    return res.send({errorMessage:"Email not found in database"})
+  }
+  if(user.isVerified){
+    return res.json({  validate:"Valid login credentials" ,token: tokenForUser(req.user) });
+  }
+
+  })
+
 };
+
 // SIGN UP
 exports.signup = (req, res, next) => {
   const email = req.body.email;
@@ -164,7 +184,7 @@ exports.confirmationPost = (req, res, next) => {
             return res.status(500).send({ errorMessage: err });
           } else {
             res.json({
-              errorMessage:
+              validate:
                 "Congratulation !!! Your account has been verified. Please log in."
             });
           }
