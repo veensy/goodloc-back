@@ -7,8 +7,8 @@ const requireSignin = passport.authenticate("local", { session: false });
 const pass = require("./controllers/forgotPassword");
 const reset = require("./controllers/resetPassword");
 const update = require("./controllers/updatePassword");
-const confirm = require('./controllers/authentification')
-const resend =  require('./controllers/authentification')
+const confirm = require("./controllers/authentification");
+const resend = require("./controllers/resendemaillink");
 
 module.exports = app => {
   app.get("/", requireAuth);
@@ -25,5 +25,5 @@ module.exports = app => {
 
   app.post("/confirmation", confirm.confirmationPost);
 
-  app.post("/resend", resend.resendTokenPost);
+  app.post("/resendemaillink", resend.resendemaillink);
 };

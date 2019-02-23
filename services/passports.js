@@ -15,18 +15,19 @@ const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
     if (!user) {
       return done(null, false);
     }
-    
+
     user.comparePassword(password, (err, isMatch) => {
+      let isPass = { pass: true };
       if (err) {
         return done(err);
- 
       }
       if (!isMatch) {
-        let isPass={pass:false}
-        return done(null, isPass);
+        console.log("nopass");
+        isPass = { pass: false };
+        return done(null, {isPass});
       }
-
-      return done(null, user);
+      console.log("pass");
+      return done(null, {user, isPass});
     });
   });
 });

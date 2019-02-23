@@ -14,13 +14,21 @@ const userSchema = new Schema({
   resetPasswordToken: String,
   resetPasswordExpires: Date,
   TokenForConfirmEmail: { type: String, required: true },
-  TokenExpirationDate: Date
+  TokenForConfirmEmailExpirationDate: Date
 });
 
 userSchema.pre("save", function(next) {
   const user = this;
 
   bcrypt.genSalt(10, function(err, salt) {
+    console.log("--------------------------");
+
+    console.log("wecrypt");
+    console.log("--------------------------");
+
+    console.log(user.password);
+    console.log("--------------------------");
+
     if (err) {
       return next(err);
     } else {
@@ -28,7 +36,12 @@ userSchema.pre("save", function(next) {
         if (err) {
           return next(err);
         } else {
+          console.log("--------------------------");
+          console.log("USERPASSWORD", user.password);
+          console.log("--------------------------");
           user.password = hash;
+          console.log("HASH", hash);
+          console.log("--------------------------");
           next();
         }
       });

@@ -26,15 +26,23 @@ exports.forgotPassword = (req, res, next) => {
       res.json("Email not in db");
     } else if (user) {
       const newToken = tokenForUser(user);
-    
-      user.update({
-        resetPasswordToken: newToken,
-        resetPasswordExpires: Date.now() + 360000
-      });
 
-      user.resetPasswordToken = newToken;
-      user.resetPasswordExpires = Date.now() + 360000;
-      user.save();
+      user
+        .update({
+          resetPasswordToken: newToken,
+          resetPasswordExpires: Date.now() + 360000
+        })
+        .then(user => {
+          console.log(user);
+        })
+        .catch(err => {
+          console.log(error);
+        });
+
+      // user.resetPasswordToken = newToken;
+      // user.resetPasswordExpires = Date.now() + 360000;
+
+      // user.save();
 
       const transporter = nodemailer.createTransport({
         service: "gmail",
@@ -46,7 +54,7 @@ exports.forgotPassword = (req, res, next) => {
           pass: `${process.env.EMAIL_PASSWORD}`
         }
       });
-      
+
       const mailOption = {
         from: "demo@gmail.com",
         to: `${user.email}`,
